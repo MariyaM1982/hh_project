@@ -1,5 +1,7 @@
 import psycopg2
+
 from config import DB_CONFIG
+
 
 def create_database():
     try:
@@ -29,18 +31,22 @@ def create_database():
     except Exception as e:
         print("Ошибка при работе с БД:", e)
 
+
 def create_tables():
     conn = psycopg2.connect(**DB_CONFIG)
     with conn.cursor() as cur:
-        cur.execute("""
+        cur.execute(
+            """
             CREATE TABLE IF NOT EXISTS employers (
                 id SERIAL PRIMARY KEY,
                 name VARCHAR(255) NOT NULL,
                 url TEXT,
                 open_vacancies INTEGER
             );
-        """)
-        cur.execute("""
+        """
+        )
+        cur.execute(
+            """
             CREATE TABLE IF NOT EXISTS vacancies (
                 id SERIAL PRIMARY KEY,
                 employer_id INTEGER REFERENCES employers(id),
@@ -50,6 +56,7 @@ def create_tables():
                 currency VARCHAR(10),
                 url TEXT
             );
-        """)
+        """
+        )
     conn.commit()
     conn.close()

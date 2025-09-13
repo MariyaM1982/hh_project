@@ -1,5 +1,6 @@
 from src.db_manager import DBManager
 
+
 def user_interface():
     db = DBManager()
     print("Выберите действие:")
@@ -28,6 +29,7 @@ def user_interface():
             print(f"{company} - {title}, от {from_salary} до {to_salary} руб. [{url}]")
     else:
         print("Неверный выбор.")
+
 
 if __name__ == "__main__":
     user_interface()
