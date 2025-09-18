@@ -20,7 +20,7 @@ def create_database():
         cur = conn.cursor()
 
         # Используем параметризованный запрос
-        cur.execute("SELECT 1 FROM pg_database WHERE datname = %s;", (DB_CONFIG['database'],))
+        cur.execute("SELECT 1 FROM pg_database WHERE datname = %s;", (DB_CONFIG["database"],))
         exists = cur.fetchone()
 
         if not exists:
@@ -36,13 +36,19 @@ def create_database():
 
 
 def create_tables() -> NoReturn:
+    """
+    Создаёт таблицы `employers` и `vacancies`, если они ещё не существуют.
+    """
+
     conn = psycopg2.connect(**DB_CONFIG)
     with conn.cursor() as cur:
-        cur.execute("CREATE TABLE IF NOT EXISTS employers (id SERIAL PRIMARY KEY, name VARCHAR(255) NOT NULL, url TEXT, open_vacancies INTEGER);")
-        cur.execute("CREATE TABLE IF NOT EXISTS vacancies (id SERIAL PRIMARY KEY, employer_id INTEGER REFERENCES employers(id), name VARCHAR(255) NOT NULL, salary_from NUMERIC, salary_to NUMERIC, currency VARCHAR(10), url TEXT);")
+        cur.execute(
+            "CREATE TABLE IF NOT EXISTS employers (id SERIAL PRIMARY KEY, name VARCHAR(255) NOT NULL, url TEXT, open_vacancies INTEGER);"
+        )
+        cur.execute(
+            "CREATE TABLE IF NOT EXISTS vacancies (id SERIAL PRIMARY KEY, employer_id INTEGER REFERENCES employers(id), name VARCHAR(255) NOT NULL, salary_from NUMERIC, salary_to NUMERIC, currency VARCHAR(10), url TEXT);"
+        )
     conn.commit()
     conn.close()
 
-"""
-    Создаёт таблицы `employers` и `vacancies`, если они ещё не существуют.
-    """
+

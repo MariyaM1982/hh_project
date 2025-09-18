@@ -1,10 +1,10 @@
 import logging
-
 import requests
 
 logging.basicConfig(level=logging.INFO)
 
 HH_API_URL = "https://api.hh.ru/employers"
+
 
 def get_employer_data(employer_id):
     """
@@ -22,6 +22,7 @@ def get_employer_data(employer_id):
         logging.error(f"Ошибка получения данных о компании {employer_id}: {response.text}")
         return None
     return response.json()
+
 
 def get_vacancies_by_employer(employer_id):
     """

@@ -2,9 +2,10 @@ import unittest
 from unittest import mock
 from src.hh_api import get_employer_data, get_vacancies_by_employer
 
+
 class TestHHAPI(unittest.TestCase):
 
-    @mock.patch('hh_api.requests.get')
+    @mock.patch("requests.get")
     def test_get_employer_data_success(self, mock_get):
         # Подготавливаем мок-ответ
         mock_response = mock.Mock()
@@ -13,7 +14,7 @@ class TestHHAPI(unittest.TestCase):
             "id": 1740,
             "name": "Яндекс",
             "alternate_url": "https://hh.ru/employer/1740",
-            "open_vacancies": 50
+            "open_vacancies": 50,
         }
         mock_get.return_value = mock_response
 
@@ -21,7 +22,7 @@ class TestHHAPI(unittest.TestCase):
         self.assertEqual(result["name"], "Яндекс")
         self.assertEqual(result["open_vacancies"], 50)
 
-    @mock.patch('hh_api.requests.get')
+    @mock.patch("requests.get")
     def test_get_employer_data_not_found(self, mock_get):
         # Подготавливаем мок-ответ
         mock_response = mock.Mock()
@@ -32,7 +33,7 @@ class TestHHAPI(unittest.TestCase):
         result = get_employer_data(999999)
         self.assertIsNone(result)
 
-    @mock.patch('hh_api.requests.get')
+    @mock.patch("requests.get")
     def test_get_vacancies_by_employer_success(self, mock_get):
         # Подготавливаем мок-ответ
         mock_response = mock.Mock()
@@ -42,13 +43,13 @@ class TestHHAPI(unittest.TestCase):
                 {
                     "name": "Python разработчик",
                     "salary": {"from": 120000, "to": 180000, "currency": "RUR"},
-                    "alternate_url": "https://hh.ru/vacancy/123"
+                    "alternate_url": "https://hh.ru/vacancy/123",
                 },
                 {
                     "name": "Java разработчик",
                     "salary": {"from": 100000, "to": 160000, "currency": "RUR"},
-                    "alternate_url": "https://hh.ru/vacancy/456"
-                }
+                    "alternate_url": "https://hh.ru/vacancy/456",
+                },
             ]
         }
         mock_get.return_value = mock_response
@@ -57,7 +58,7 @@ class TestHHAPI(unittest.TestCase):
         self.assertEqual(len(vacancies), 2)
         self.assertEqual(vacancies[0]["name"], "Python разработчик")
 
-    @mock.patch('hh_api.requests.get')
+    @mock.patch("requests.get")
     def test_get_vacancies_by_employer_not_found(self, mock_get):
         # Подготавливаем мок-ответ
         mock_response = mock.Mock()
@@ -67,6 +68,7 @@ class TestHHAPI(unittest.TestCase):
 
         vacancies = get_vacancies_by_employer(999999)
         self.assertEqual(len(vacancies), 0)
+
 
 if __name__ == "__main__":
     unittest.main()
